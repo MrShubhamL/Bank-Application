@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 public class BankDetails {
@@ -14,7 +16,7 @@ public class BankDetails {
     private String bankName;
     private String bankIfsc;
     @JsonBackReference
-    @OneToOne(mappedBy = "bankDetails")
+    @Transient
     private Accounts accounts;
 
     @JsonManagedReference

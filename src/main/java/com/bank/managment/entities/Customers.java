@@ -24,7 +24,4 @@ public class Customers {
     @JsonManagedReference
     @OneToOne(mappedBy = "customers", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Accounts accounts;
-//    @JsonBackReference
-//    @OneToMany(mappedBy = "customers")
-//    private List<Transactions> transactions;
 }

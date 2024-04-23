@@ -20,7 +20,4 @@ public class Transactions {
     @ManyToOne
     private Accounts accounts;
 
-    @ManyToOne
-    @JsonIgnore
-    private Customers customers;
 }

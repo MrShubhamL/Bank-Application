@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.annotation.Persistent;
 
 import java.util.List;
 
@@ -22,8 +24,9 @@ public class Accounts {
     @OneToOne
     private Customers customers;
     @JsonManagedReference
-    @OneToOne
-    private BankDetails bankDetails;
+    @ManyToMany
+    private List<BankDetails> bankDetails;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "accounts", cascade = CascadeType.REMOVE)
     private List<Transactions> transactions;

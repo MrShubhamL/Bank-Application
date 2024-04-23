@@ -1,5 +1,6 @@
 package com.bank.managment.services.impl;
 
+import com.bank.managment.configurations.Authorization;
 import com.bank.managment.entities.Accounts;
 import com.bank.managment.entities.Customers;
 import com.bank.managment.entities.Transactions;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -21,6 +23,7 @@ public class AccountServiceImpl implements AccountService {
     TransactionRepository transactionRepository;
     @Autowired
     CustomerRepository customerRepository;
+
     @Override
     public Accounts createAccount(Accounts accounts) {
         accounts.setEnabled(false);
@@ -44,9 +47,12 @@ public class AccountServiceImpl implements AccountService {
     public Transactions createTransaction(Transactions transactions) {
         transactions.setTransactionDate(LocalDate.now().toString());
         transactions.setTransactionTime(LocalTime.now().toString());
+        Float transactionAmount = transactions.getTransactionAmount();
+
+        // Getting accounts details..
         Long accountId = transactions.getAccounts().getAccountId();
         Accounts accountsByAccountId = accountRepository.getAccountsByAccountId(accountId);
-        Float transactionAmount = transactions.getTransactionAmount();
+
         if(accountsByAccountId.isEnabled()){
             if(transactions.getTransactionType().equals("CREDITED")){
                 Float totalAmount = accountsByAccountId.getAccountBalance()+transactionAmount;
@@ -68,5 +74,10 @@ public class AccountServiceImpl implements AccountService {
         Accounts accountsByAccountId = accountRepository.getAccountsByAccountId(id);
         accountsByAccountId.setEnabled(true);
         return accountRepository.save(accountsByAccountId);
+    }
+
+    @Override
+    public List<Transactions> getAllTransactionsByAccountId(Long id) {
+        return transactionRepository.getTransactionsByAccountsAccountId(id);
     }
 }
